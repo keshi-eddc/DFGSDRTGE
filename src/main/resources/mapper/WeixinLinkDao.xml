@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eddc.weixinlink.dao.WeixinLinkDao">
+    <sql id="BASE_TABLE">
+    t_user
+</sql>
+
+    <sql id="BASE_COLUMN">
+userId,userName,password,phone
+</sql>
+
+
+    <select id="selectUsersByProviceByBu" resultType="java.util.LinkedHashMap" parameterType="hashmap">
+     select c.* from Johnson_message_category ct LEFT JOIN Johnson_message mg on ct.id = mg.province_id
+                left join Johnson_message_customer c on mg.customer_id = c.id
+     where ct.category_name = #{BU} and ct.province_name = #{province_name} and c.mail_switch = 'on'and mg.mail_switch = 'on' and c.type = #{sendType}
+  </select>
+
+    <select id="getSiChuanOrderDataMessage" resultType="java.util.LinkedHashMap" parameterType="hashmap">
+
+  { call ETL_Johnson_sichuan_mails_forcust(#{BU},#{date_from},#{date_end},#{period},#{outType})}
+
+  </select>
+
+    <select id="getHeNanOrderDataMessage" resultType="java.util.LinkedHashMap" parameterType="hashmap">
+
+  { call ETL_Johnson_henan_mails_forcust(#{BU},#{date},#{num},#{num2})}
+
+  </select>
+
+    <select id="updateHeNanToTableDetail" resultType="java.util.LinkedHashMap" parameterType="hashmap">
+
+  { call ETL_Johnson_henan_mails_forcust(#{BU},#{date},#{num},#{num2})}
+
+  </select>
+
+    <!-- 目的：为dao接口方法提供sql语句配置 -->
+    <select id="getDataHeNan" resultType="java.util.LinkedHashMap" parameterType="java.lang.String">
+		${value}
+  </select>
+    <!-- 目的：sql获得河南的所有的用户 -->
+    <select id="getaHeNanUsers" resultType="java.util.LinkedHashMap" parameterType="java.lang.String">
+		${value}
+  </select>
+
+    <!-- 更新微信链接 -->
+    <select id="getDataFromTableMedicineSearchInfo" resultType="java.util.LinkedHashMap" parameterType="hashmap">
+     select * from [dbo].[Medicine_SearchInfo] where  platform like #{platform} and ReleaseDate = #{ReleaseDate}
+  </select>
+
+</mapper>
