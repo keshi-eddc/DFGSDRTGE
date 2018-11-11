@@ -1,5 +1,7 @@
 package com.eddc.weixinlink;
 
+import com.eddc.weixinlink.dao.WeixinLinkDao;
+import com.eddc.weixinlink.entity.Medicine_SearchInfo;
 import com.eddc.weixinlink.service.WeixinLinkService;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
@@ -23,6 +25,9 @@ public class WeixinLinkApplicationTests {
 
     @Autowired
     private WeixinLinkService weixinLinkService;
+
+    @Autowired
+    private WeixinLinkDao weixinLinkDao;
 
     @Test
     public void getData() {
@@ -107,10 +112,13 @@ public class WeixinLinkApplicationTests {
             } else {
                 logger.error("!!!参数异常,ArticleUrl,account,ArticleId，中有空值,不进行转换。");
             }
+            //3.存储
+            Medicine_SearchInfo medicine_searchInfo = weixinLinkDao.getOne(ArticleId);
+            //获得
+            medicine_searchInfo.setFormatUrl(article_origin_url);
+            //更新
+            weixinLinkDao.update(medicine_searchInfo);
         }
-
-        //3.存储
-
 
     }
 
