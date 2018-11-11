@@ -6,5 +6,5 @@ import java.util.Map;
 public interface WeixinLinkService {
     List<Map<String, Object>> getDataFromMedicineSearchInfo(Map params);
 
-    public void WeixinLinkTransform(String appid, String url, String account);
+    public String WeixinLinkTransform(String appid, String url, String account);
 }
