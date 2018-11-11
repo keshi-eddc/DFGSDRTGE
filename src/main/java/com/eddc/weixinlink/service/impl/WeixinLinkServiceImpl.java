@@ -1,7 +1,9 @@
 package com.eddc.weixinlink.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.eddc.weixinlink.dao.WeixinLinkDao;
 import com.eddc.weixinlink.service.WeixinLinkService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,39 +62,49 @@ public class WeixinLinkServiceImpl implements WeixinLinkService {
 
     //公众号文章临时链接转永久链接API
     @Override
-    public void WeixinLinkTransform(String url, String account) {
-//        url = "https://www.baidu.com/";
-     /*   String requestAddress = "https://api.shenjian.io/?appid=d0d3daa346c40d8f0cc4bbd413e325c7";
-        if (StringUtils.isNotEmpty(account) && StringUtils.isNotEmpty(url)) {
-            try {
-                String request_url = "";
-                Request request = new Request(url, RequestMethod.GET);
-                Response response = HttpClientUtil.doRequest(request);
-                int code = response.getCode();
-                if (code == 200) {
-                    String content = response.getResponseText();
-                    logger.info(content);
-                } else {
-                    logger.error("！网络请求错误：" + code);
-                }
-            } catch (MethodNotSupportException e) {
-                e.printStackTrace();
-            }
-        } else {
-            logger.error("！传入参数有误，url，account存在空");
-        }
-*/
+    public void WeixinLinkTransform(String appid, String url, String account) {
+        //永久链接
+        String article_origin_url = "";
+        String reason = "";
+        int error_code = 0;
         try {
             url = URLEncoder.encode(url, "UTF-8");
             account = URLEncoder.encode(account, "UTF-8");
-            String appid = "d0d3daa346c40d8f0cc4bbd413e325c7";
             String httpUrl = "https://api.shenjian.io/";
             String httpArg = "appid=" + appid + "&url=" + url + "&account=" + account;
             String jsonResult = request(httpUrl, httpArg);
             System.out.println(jsonResult);
+            if (StringUtils.isNotEmpty(jsonResult)) {
+                JSONObject jo = JSONObject.parseObject(jsonResult);
+                if (jo.containsKey("error_code") && jo.containsKey("reason")) {
+                    error_code = jo.getIntValue("error_code");
+//                    System.out.println("error_code:" + error_code);
+                    reason = jo.getString("reason");
+//                    System.out.println("reason:" + reason);
+                    if (error_code == 0) {
+                        if (jo.containsKey("data")) {
+                            JSONObject jodata = jo.getJSONObject("data");
+                            if (jodata.containsKey("article_origin_url")) {
+                                String article_origin_url_temp = jodata.getString("article_origin_url");
+                                if (StringUtils.isNotEmpty(article_origin_url_temp)) {
+                                    article_origin_url = article_origin_url_temp;
+                                    logger.info("- 永久链接：" + article_origin_url);
+                                } else {
+                                    logger.error("!未获得永久链接");
+                                }
+                            }
+                        }
+                    } else {
+                        logger.error("!!!接口调用失败-- " + "error_code:" + error_code + " ,reason:" + reason + " 。appid:" + appid + " ,url:" + url + " ,account:" + account);
+                    }
+                } else {
+                    logger.error("!!! 接口返回json错误" + " 。appid:" + appid + " ,url:" + url + " ,account:" + account);
+                }
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+
     }
 
     /**
