@@ -98,10 +98,10 @@ public class WeixinLinkServiceImpl implements WeixinLinkService {
                             }
                         }
                     } else {
-                        logger.error("!!!接口调用失败-- " + "error_code:" + error_code + " ,reason:" + reason + " 。appid:" + appid + " ,url:" + url + " ,account:" + account);
+                        logger.error("！！！接口调用失败- " + "error_code:" + error_code + " ,reason:" + reason + " 。appid:" + appid + " ,url:" + url + " ,account:" + account);
                     }
                 } else {
-                    logger.error("!!! 接口返回json错误" + " 。appid:" + appid + " ,url:" + url + " ,account:" + account);
+                    logger.error("！！！接口返回json错误" + " 。appid:" + appid + " ,url:" + url + " ,account:" + account);
                 }
             }
         } catch (UnsupportedEncodingException e) {
