@@ -38,8 +38,25 @@ public class WeixinLinkApplicationTests {
     }
 
     @Test
-    public void insertData() {
-
+    public void getDataBysqlTest() {
+        String sql = "select * from [dbo].[Medicine_SearchInfo] where platform like'%公众号%'and releasedate>'2018-10-10' " +
+                "and ArticleId = 'e3c305d63083cbe1685dc244a7115536'";
+        List<Map<String, Object>> outputMapList = weixinLinkDao.getDataFromTableMedicineSearchInfoBySql(sql);
+        for (int i = 0; i < outputMapList.size(); i++) {
+            System.out.println("======第 " + i + " 条数据");
+            Map<String, Object> temp = outputMapList.get(i);
+            for (String key : temp.keySet()) {
+                try {
+                    String va = "";
+                    if (temp.get(key) != null) {
+                        va = temp.get(key).toString();
+                    }
+                    System.out.println(key + " = " + va);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Test

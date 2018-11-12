@@ -34,6 +34,11 @@ userId,userName,password,phone
 	left join [Medicine_CrawlerKeywordsInfo]b  on a.KeywordsId=b.KeywordsId
   </select>
 
+    <!-- 目的： -->
+    <select id="getDataFromTableMedicineSearchInfoBySql" resultType="java.util.LinkedHashMap" parameterType="java.lang.String">
+		${value}
+  </select>
+
     <sql id="Base_Column_List">
         Cid, ArticleId, ArticleTitle, ArticleUrl, FormatUrl
     </sql>
