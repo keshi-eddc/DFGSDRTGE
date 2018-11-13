@@ -4,7 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.eddc.weixinlink.dao.WeixinLinkDao;
 import com.eddc.weixinlink.service.WeixinLinkService;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ import java.util.zip.GZIPInputStream;
 @Service(value = "WeixinLinkService")
 public class WeixinLinkServiceImpl implements WeixinLinkService {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static Logger logger = LogManager.getLogger(WeixinLinkServiceImpl.class.getName());
 
     @Autowired
     private WeixinLinkDao weixinLinkDao;

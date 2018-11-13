@@ -1,4 +1,4 @@
-package com.eddc.weixinlink;
+package com.eddc.weixinlink.jobs;
 
 import com.eddc.weixinlink.dao.WeixinLinkDao;
 import com.eddc.weixinlink.entity.Medicine_SearchInfo;
@@ -6,25 +6,28 @@ import com.eddc.weixinlink.service.WeixinLinkService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class WeixinLinkApplicationTests {
+/**
+ * @Description: 调度任务
+ * @Author: keshi
+ * @CreateDate: 2018年11月12日 13:56
+ * @UpdateUser:
+ * @UpdateDate:
+ * @UpdateRemark:
+ * @Version: 1.0
+ */
+@Component
+public class WeixinLinkTask {
 
-//    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private static Logger logger = LogManager.getLogger(WeixinLinkApplicationTests.class.getName());
-
+    private static Logger logger = LogManager.getLogger(WeixinLinkTask.class.getName());
 
     @Autowired
     private WeixinLinkService weixinLinkService;
@@ -32,52 +35,14 @@ public class WeixinLinkApplicationTests {
     @Autowired
     private WeixinLinkDao weixinLinkDao;
 
-    @Test
-    public void getData() {
-        Map<String, Object> params = new HashMap<String, Object>(3);
-        params.put("platform", "%公众号%");
-        params.put("ReleaseDate", "2018-10-10");
-        weixinLinkService.getDataFromMedicineSearchInfo(params);
-    }
-
-    @Test
-    public void getDataBysqlTest() {
-        String sql = "select  [ArticleId],[ArticleTitle],[ArticleUrl],a.KeywordsId,competitorwechat,releasedate from (\n" +
-                "select [ArticleId],[ArticleTitle],[ArticleUrl],KeywordsId,releasedate\n" +
-                "from [dbo].[Medicine_SearchInfo] where platform like'%公众号%'and releasedate>'2018-11-05')a\n" +
-                "left join [Medicine_CrawlerKeywordsInfo]b  on a.KeywordsId=b.KeywordsId \n";
-        List<Map<String, Object>> outputMapList = weixinLinkDao.getDataFromTableMedicineSearchInfoBySql(sql);
-        for (int i = 0; i < outputMapList.size(); i++) {
-            System.out.println("======第 " + i + " 条数据");
-            Map<String, Object> temp = outputMapList.get(i);
-            for (String key : temp.keySet()) {
-                try {
-                    String va = "";
-                    if (temp.get(key) != null) {
-                        va = temp.get(key).toString();
-                    }
-                    System.out.println(key + " = " + va);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    @Test
-    public void WeixinLinkTransformTest() {
-        //神箭手appid
-        String appid = "d0d3daa346c40d8f0cc4bbd413e325c7";
-        //从搜狗获取的文章临时链接
-        String url = "https://mp.weixin.qq.com/s?timestamp=1538981652&src=3&ver=1&signature=CFt7Fg2FJsS8hcQyn4ImfJPjQOar87hFhpPbau341F0UnS9IQlqKPV3Sgunvko6RnGTf2RFRk9R1k-oqo1tYCUexRzpalUUDeV7Xf46Jtz9nh5bjYRYNxd9dXuWOYXeyxcQ10u1zFf8PKMwVNnAy2EWDdqFgw-2WQTff8FavTG8=";
-        //发布此文章的微信号或biz
-        String account = "dingxiangwang";
-        weixinLinkService.WeixinLinkTransform(appid, url, account);
-    }
-
-
-    @Test
-    public void updateTest() {
+    /**
+     * @methodName WeixinLinkTransformAndUpdate
+     * @description 临时链接转永久链接，更新到数据库
+     * @author keshi
+     * @date 2018年11月12日 13:59
+     */
+    @Scheduled(cron = "0 0/1 * * * ?")
+    public void WeixinLinkTransformAndUpdate() {
         //1.获得要转换的数据
         Map<String, Object> params = new HashMap<String, Object>(3);
         params.put("platform", "%公众号%");
@@ -161,15 +126,4 @@ public class WeixinLinkApplicationTests {
             }
         }
     }
-
-    @Test
-    public void logTest() {
-        for (int i = 1; ; i++) {
-            logger.info("测试 log info");
-            logger.error("测试 log error");
-            logger.warn("测试 log warn");
-        }
-
-    }
-
 }
