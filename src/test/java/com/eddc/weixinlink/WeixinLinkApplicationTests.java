@@ -36,7 +36,7 @@ public class WeixinLinkApplicationTests {
     public void getData() {
         Map<String, Object> params = new HashMap<String, Object>(3);
         params.put("platform", "%公众号%");
-        params.put("ReleaseDate", "2018-10-10");
+        params.put("ReleaseDate", "2018-11-09");
         weixinLinkService.getDataFromMedicineSearchInfo(params);
     }
 
@@ -81,7 +81,7 @@ public class WeixinLinkApplicationTests {
         //1.获得要转换的数据
         Map<String, Object> params = new HashMap<String, Object>(3);
         params.put("platform", "%公众号%");
-        params.put("ReleaseDate", "2018-10-10");
+        params.put("ReleaseDate", "2018-11-09");
         List<Map<String, Object>> outputMapList = weixinLinkService.getDataFromMedicineSearchInfo(params);
         //2.转换
         for (int i = 0; i < outputMapList.size(); i++) {

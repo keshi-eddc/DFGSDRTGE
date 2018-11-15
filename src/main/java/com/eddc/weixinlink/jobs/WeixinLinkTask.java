@@ -24,7 +24,7 @@ import java.util.Map;
  * @UpdateRemark:
  * @Version: 1.0
  */
-@Component
+//@Component
 public class WeixinLinkTask {
 
     private static Logger logger = LogManager.getLogger(WeixinLinkTask.class.getName());

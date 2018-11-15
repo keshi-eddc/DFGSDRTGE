@@ -25,12 +25,17 @@ userId,userName,password,phone
 	from [dbo].[Medicine_SearchInfo] where platform like #{platform} and releasedate> #{ReleaseDate} )a
 	left join [Medicine_CrawlerKeywordsInfo]b  on a.KeywordsId=b.KeywordsId
 	-->
-
+<!--
+ select  [ArticleId],[ArticleTitle],[ArticleUrl],a.KeywordsId,competitorwechat,releasedate from (
+	select [ArticleId],[ArticleTitle],[ArticleUrl],KeywordsId,releasedate
+	from [dbo].[Medicine_SearchInfo] where platform like #{platform} and releasedate> #{ReleaseDate} and ArticleId = 'e3c305d63083cbe1685dc244a7115536')a
+	left join [Medicine_CrawlerKeywordsInfo]b  on a.KeywordsId=b.KeywordsId
+-->
     <!-- 更新微信链接 -->
     <select id="getDataFromTableMedicineSearchInfo" resultType="java.util.LinkedHashMap" parameterType="hashmap">
     select  [ArticleId],[ArticleTitle],[ArticleUrl],a.KeywordsId,competitorwechat,releasedate from (
 	select [ArticleId],[ArticleTitle],[ArticleUrl],KeywordsId,releasedate
-	from [dbo].[Medicine_SearchInfo] where platform like #{platform} and releasedate> #{ReleaseDate} and ArticleId = 'e3c305d63083cbe1685dc244a7115536')a
+	from [dbo].[Medicine_SearchInfo] where platform like #{platform} and releasedate> #{ReleaseDate} )a
 	left join [Medicine_CrawlerKeywordsInfo]b  on a.KeywordsId=b.KeywordsId
   </select>
 

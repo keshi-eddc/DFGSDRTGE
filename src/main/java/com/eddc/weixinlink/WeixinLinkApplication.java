@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @MapperScan("com.eddc.weixinlink.dao")
-@EnableScheduling
+//@EnableScheduling
 public class WeixinLinkApplication {
 
     public static void main(String[] args) {
