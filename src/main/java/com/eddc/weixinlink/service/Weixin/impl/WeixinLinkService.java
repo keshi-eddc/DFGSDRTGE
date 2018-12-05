@@ -1,4 +1,4 @@
-package com.eddc.weixinlink.service;
+package com.eddc.weixinlink.service.Weixin.impl;
 
 import java.util.List;
 import java.util.Map;

@@ -2,7 +2,7 @@ package com.eddc.weixinlink;
 
 import com.eddc.weixinlink.dao.WeixinLinkDao;
 import com.eddc.weixinlink.entity.Medicine_SearchInfo;
-import com.eddc.weixinlink.service.WeixinLinkService;
+import com.eddc.weixinlink.service.Weixin.impl.WeixinLinkService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +30,7 @@ public class WeixinLinkApplicationTests {
     @Autowired
     private WeixinLinkService weixinLinkService;
 
-    @Autowired
+    @Resource
     private WeixinLinkDao weixinLinkDao;
 
     @Test
@@ -168,6 +169,11 @@ public class WeixinLinkApplicationTests {
             logger.info("测试 log info");
             logger.error("测试 log error");
             logger.warn("测试 log warn");
+            try {
+                Thread.sleep(1*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
     }

@@ -2,13 +2,12 @@ package com.eddc.weixinlink.jobs;
 
 import com.eddc.weixinlink.dao.WeixinLinkDao;
 import com.eddc.weixinlink.entity.Medicine_SearchInfo;
-import com.eddc.weixinlink.service.WeixinLinkService;
+import com.eddc.weixinlink.service.Weixin.impl.WeixinLinkService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
